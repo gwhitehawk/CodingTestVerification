@@ -21,5 +21,7 @@ def upload(request):
     else:
         form = UploadForm() # An unbound form
 
+    return render(request, 'upload.html', { 'form' : form, })
+
 def response(request):
     pass 
