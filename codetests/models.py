@@ -3,6 +3,17 @@ from django import forms
 
 PROBLEM_CHOICES = (('1', 'Problem1',), ('2', 'Problem2',))
 
+class Problem(models.Model):
+    # problem title
+    title = models.CharField(max_length=50)
+    
+    # solution handled according to problem id.
+    # could be path to a file
+    solution = models.CharField(max_length=50)
+
+    # upper bound for run time, checking efficiency
+    max_duration = models.IntegerField()
+
 class Document(models.Model):
     docfile = models.FileField(upload_to='sources/%s')
 

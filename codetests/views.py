@@ -10,8 +10,8 @@ def upload(request):
     if request.method == 'POST': # If the form has been submitted...
         form = UploadForm(request.POST, request.FILES) # A form bound to the POST data
         if form.is_valid():
-            #newfile = Document(docfile = request.FILES['docfile'])
-            #newdoc.save()
+            newfile = Document(docfile = request.FILES['docfile'])
+            newdoc.save()
             return HttpResponseRedirect('/response/')
     else:
         form = UploadForm() # An unbound form
@@ -19,7 +19,7 @@ def upload(request):
     return render(request, 'upload.html', { 'form' : form, })
 
 def response(request):
-    #if (1 == 1):
-    return render(request, 'response.html', { 'answer' : 'Good job', })
-    #else:
-    #    return render(request, 'upload.html', { 'form' : UploadForm(), })
+    if (1 == 1):
+        return render(request, 'response.html', { 'answer' : 'Good job', })
+    else:
+        return render(request, 'upload.html', { 'form' : UploadForm(), })
