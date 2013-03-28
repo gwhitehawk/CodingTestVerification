@@ -12,16 +12,14 @@ def upload(request):
         if form.is_valid():
             #newfile = Document(docfile = request.FILES['docfile'])
             #newdoc.save()
-            #return render_to_response(
-            #    'response.html',
-            #    {'answer' : 'Good job!'},
-            #    context_instance = RequestContext(request)
-            #)
-            return HttpResponseRedirect('/thanks/') # Redirect after POST
+            return HttpResponseRedirect('/response/')
     else:
         form = UploadForm() # An unbound form
 
     return render(request, 'upload.html', { 'form' : form, })
 
 def response(request):
-    pass 
+    #if (1 == 1):
+    return render(request, 'response.html', { 'answer' : 'Good job', })
+    #else:
+    #    return render(request, 'upload.html', { 'form' : UploadForm(), })

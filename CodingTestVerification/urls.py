@@ -4,8 +4,9 @@ from django.contrib import admin
 from codetests import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.upload, name='upload'),
-    url(r'^$', views.response, name='response'),
+    url(r'^$', views.upload, name='home'),
+    url(r'^upload/', views.upload, name='upload'),
+    url(r'^response/', views.response, name='response'),
     # Examples:
     # url(r'^$', 'CodingTestVerification.views.home', name='home'),
     # url(r'^CodingTestVerification/', include('CodingTestVerification.foo.urls')),
