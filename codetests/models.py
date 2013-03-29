@@ -1,22 +1,25 @@
 from django.db import models
 from django import forms
 
-PROBLEM_CHOICES = (('1', 'Problem1',), ('2', 'Problem2',))
+PROBLEM_CHOICES = (('problem1', 'problem1'), ('problem2', 'problem2',))
 
-class Problem(models.Model):
+class Test(models.Model):
     # problem title
-    title = models.CharField(max_length=50)
+    problem_title = models.CharField(max_length=50)
+    
+    # path to test file
+    test_input = models.CharField(max_length=100)
     
     # solution handled according to problem id.
     # could be path to a file
-    solution = models.CharField(max_length=50)
+    solution = models.CharField(max_length=100)
 
     # upper bound for run time, checking efficiency
     max_duration = models.IntegerField()
 
 class UploadForm(forms.Form):
     sender = forms.EmailField()
-    problem_id = forms.MultipleChoiceField(
+    problem_title = forms.MultipleChoiceField(
         widget = forms.CheckboxSelectMultiple, 
         choices = PROBLEM_CHOICES)
     message = forms.CharField()

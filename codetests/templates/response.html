@@ -1,2 +1,11 @@
-{{answer}}
+{% ifequal failed 0 %}
+    <b>Good job! Thanks.</b>
+{% else %}
+    {% ifequal failed -1 %}
+        <b>Bad input format. Try again.</b><br><br>
+    {% else %}
+        <b>{{failed}} of {{all}} tests failed. Try again.</b><br><br>
+    {% endifequal %}
 
+    {% include "upload.html" %}
+{% endifequal %}
