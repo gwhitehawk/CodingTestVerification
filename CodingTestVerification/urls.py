@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-# admin.autodiscover()
+admin.autodiscover()
 from codetests import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.upload, name='home'),
+    url(r'^$', views.login_user, name='home'),
+    url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^upload/', views.upload, name='upload'),
     url(r'^response/', views.response, name='response'),
     # Examples:

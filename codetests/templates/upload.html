@@ -1,3 +1,6 @@
+Hello. Here's a problem:<br><br>
+<b>{{ problem_title }}</b><br><br>
+{{ statement }}<br>
 <form enctype="multipart/form-data" action="/upload/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
