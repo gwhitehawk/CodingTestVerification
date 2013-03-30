@@ -20,11 +20,10 @@ class Test(models.Model):
 class User(models.Model):
     email = models.CharField(max_length=50)
     password = models.CharField(max_length=32)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    problem = models.ForeignKey('Problem')
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
+    problem = models.ForeignKey('Problem', blank=True, null=True)
     activated = models.DateTimeField("login activated", blank=True, null=True)
-    expires = models.DateTimeField("login expires", blank=True, null=True)
 
 class LoginForm(forms.Form):
     login = forms.EmailField()
