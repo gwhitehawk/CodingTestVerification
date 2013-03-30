@@ -1,15 +1,18 @@
+import os
+from jenkinsapi import jenkins
+
+from django.core.mail import send_mail, EmailMessage
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from codetests.models import UploadForm
-import os
-from jenkinsapi import jenkins
 from codetests.controller import verify as controller_verify
 
 REMOTE_HOST = "ec2-23-20-248-192.compute-1.amazonaws.com"
 VERIFY_JOB = "verify-code-test"
 SUBMISSION_PATH = "submissions/"
+RECIPIENTS = [ 'mirka@knewton.com' ]
 
 def save_file(newfile):
     if file:
@@ -40,12 +43,22 @@ def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            newfile = request.FILES['gzfile']
-            save_file(newfile)
+            solution = request.FILES['gzfile']
+            save_file(solution)
             result = verify(request.POST['problem_title'], 
-            request.FILES['gzfile'].name)
+                solution.name)
             
             if result[0] == 0:
+                try:
+                    mail = EmailMessage(request.POST['problem_title'],
+                                        request.POST['message'], 
+                                        request.POST['sender'],
+                                        RECIPIENTS)
+                    mail.attach(solution.name, solution.read(), solution.content_type)
+                    #mail.send()
+                except:
+                    return render(request, 'upload_again.html', 
+                        { 'failed': -2, 'all': 0, 'form' : form })    
                 return HttpResponseRedirect('/response/')
             else:
                 return render(request, 'upload_again.html', 

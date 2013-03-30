@@ -15,10 +15,10 @@ class Test(models.Model):
 
 class UploadForm(forms.Form):
     sender = forms.EmailField()
-    problem_title = forms.MultipleChoiceField(
-        widget = forms.CheckboxSelectMultiple, 
+    problem_title = forms.ChoiceField(
+        widget = forms.Select, 
         choices = PROBLEM_CHOICES)
-    message = forms.CharField()
+    message = forms.CharField(widget=forms.Textarea(attrs={'cols': 50, 'rows': 15}))
     gzfile = forms.FileField(
                 label = 'Select a file',
                 help_text = 'max. 1MB',

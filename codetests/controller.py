@@ -35,7 +35,7 @@ def verify(problem_id, sourcefile):
         os.system("chmod 777 " + SOURCE_PATH + basename)
         os.system("chmod 777 " + SOURCE_PATH + basename + "/run.sh")
     except Exception:
-        return [-1, -1]
+        return [-1, 0]
 
     result = 0
     allfiles = len(os.listdir(input_path))

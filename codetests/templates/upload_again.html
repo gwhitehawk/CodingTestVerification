@@ -1,8 +1,10 @@
-{% ifequal failed -1 %}
-	<b>Bad input format. Try again.</b><br><br>
+{% if failed == -1 %}
+    <b>Bad input format. Try again.</b><br><br>
+{% elif failed == -2 %}
+    <b>Email not sent. Attachment error.</b><br><br>
 {% else %}
     <b>{{failed}} of {{all}} tests failed. Try again.</b><br><br>
-{% endifequal %}
+{% endif %}
 
 <form enctype="multipart/form-data" action="/upload/" method="post">{% csrf_token %}
 {{form.as_p}}
