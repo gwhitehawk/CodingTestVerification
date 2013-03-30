@@ -7,13 +7,9 @@ class Test(models.Model):
     # problem title
     problem_title = models.CharField(max_length=50)
     
-    # path to test file
+    # test file name
     test_input = models.CharField(max_length=100)
     
-    # solution handled according to problem id.
-    # could be path to a file
-    solution = models.CharField(max_length=100)
-
     # upper bound for run time, checking efficiency
     max_duration = models.IntegerField()
 
@@ -29,9 +25,3 @@ class UploadForm(forms.Form):
                 # should be true but has validation issues
                 required = False,
              )
-
-    def __unicode__(self):
-        return self.sender()
-
-class Document(models.Model):
-    gzfile = models.FileField(upload_to = '/tmp/')

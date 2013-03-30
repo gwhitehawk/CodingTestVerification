@@ -42,14 +42,18 @@ def upload(request):
         if form.is_valid():
             newfile = request.FILES['gzfile']
             save_file(newfile)
-            result = verify(request.POST['problem_title'], request.FILES['gzfile'].name)
-            return render(request, 'response.html', { 'failed': result[0], 'all': result[1] })
-            #return HttpResponseRedirect('/response/')
+            result = verify(request.POST['problem_title'], 
+            request.FILES['gzfile'].name)
+            
+            if result[0] == 0:
+                return HttpResponseRedirect('/response/')
+            else:
+                return render(request, 'upload_again.html', 
+                { 'failed': result[0], 'all': result[1], 'form' : form })
     else:
         form = UploadForm()
 
     return render(request, 'upload.html', { 'form' : form, })
 
 def response(request):
-    result = verify(request.POST['problem_title'], request.FILES['gzfile'].name)
-    return render(request, 'response.html', { 'failed': result[0], 'all': result[1] })
+    return render(request, 'response.html', {})
