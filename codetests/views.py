@@ -23,6 +23,9 @@ RECIPIENTS = [ 'mirka@knewton.com' ]
 
 def save_file(newfile):
     if file:
+        if not os.path.exists(SUBMISSION_PATH):
+            os.makedirs(SUBMISSION_PATH)
+
         destination = open(SUBMISSION_PATH + newfile.name, 'wb+')
         for chunk in newfile.chunks():
             destination.write(chunk)
