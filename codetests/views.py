@@ -67,7 +67,7 @@ def authenticate(login, password):
     else:
         naive = user.activated.replace(tzinfo=None)
         if (datetime.datetime.now() - naive > 
-                datetime.timedelta(days=1)):
+                datetime.timedelta(days=30)):
             #user.delete()
             return False
         else:
