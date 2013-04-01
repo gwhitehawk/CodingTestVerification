@@ -102,8 +102,7 @@ def upload(request):
             save_file(solution)
             problem_title = User.objects.get(
                 email=request.session['login']).problem.title
-            result = verify(problem_title, 
-                solution.name)
+            result = verify(problem_title, solution.name)
             
             if result[0] == 0:
                 try:

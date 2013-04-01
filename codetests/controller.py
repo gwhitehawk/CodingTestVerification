@@ -4,7 +4,10 @@ import os
 import tarfile
 import datetime
 import shutil
+import time
+from threading import Thread
 from codetests.models import Test
+from codetests.utils import InterruptableThread
 
 TEST_PATH = "tests/"
 SOURCE_PATH = "submissions/"
@@ -29,6 +32,16 @@ def verify_single(expected, actual):
 
     return result
 
+def run_script(basename, input_path, input_id, output_name):
+    os.system("./%s%s/run.sh %s%s/input > %s" % (SOURCE_PATH, 
+        basename, input_path, input_id, output_name))
+
+def timeout_kill(thread, limit, test_failed):
+    time.sleep(limit)
+    if thread.isAlive():
+        test_failed = 1
+        thread.terminate()        
+
 def verify(problem_id, sourcefile):
     input_path = TEST_PATH + problem_id + "/"
 
@@ -48,27 +61,29 @@ def verify(problem_id, sourcefile):
     
     for input_id in os.listdir(input_path):
         failed = 0
-        try:
-            output_name = "output_%s_%s" % (sourcefile, input_id)
-            
-            limit_file = open(input_path + input_id + "/time_limit", "r")
-            limit = int(limit_file.readline())
-            limit_file.close()
-            
-            #limit = Test.objects.get(problem_title=problem_id, test_input=filename).max_duration
-            start = datetime.datetime.now() 
-            os.system("./%s%s/run.sh %s%s/input > %s" % (SOURCE_PATH, basename, input_path, input_id, output_name))
-            end = datetime.datetime.now()
-            delta = end - start
-            if delta.microseconds/1000 > limit:
-                failed = 1
-            else:
-                failed = verify_single(input_path + input_id + "/output", 
-                                       output_name)
-        except Exception:
-            if (failed == 0):
-                failed = 1
+        #try:
+        output_name = "output_%s_%s" % (sourcefile, input_id)
         
+        limit_file = open(input_path + input_id + "/time_limit", "r")
+        limit = float(limit_file.readline())/float(1000)
+        limit_file.close()
+        
+        thread = InterruptableThread(target = run_script, args = (basename, input_path, input_id, output_name, ))
+        thread.start()
+
+        killer_thread = InterruptableThread(target = timeout_kill, args = (thread, limit, failed))
+        
+        if killer_thread.isAlive():
+            killer_thread.terminate()
+        
+        time.sleep(1)
+        if (failed == 0): 
+            failed = verify_single(input_path + input_id + "/output", 
+                                   output_name)
+        #except Exception:
+        #    if (failed == 0):
+        #        failed = 1
+    
         result = result + failed
         if os.path.exists(output_name):
             os.remove(output_name)
