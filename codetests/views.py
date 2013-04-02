@@ -75,7 +75,7 @@ def authenticate(login, password):
             return False
         else:
             return True
-    
+
 def login_user(request):
     login = password = ''
     form = LoginForm()
@@ -89,7 +89,7 @@ def login_user(request):
             request.session['login'] = login
             url = reverse('upload')
             return HttpResponseRedirect(url)
-    
+
     return render(request, 'login_user.html', 
                   { 'login': login,'form': form })
 
